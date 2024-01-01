@@ -1,0 +1,19 @@
+Books | getschema 
+
+//rf_id	0	System.String	string
+//book_title	1	System.String	string
+//publish_date	2	System.Int64	long
+//author	3	System.String	string
+//language	4	System.String	string
+//number_of_pages	5	System.Int64	long
+//weight_gram	6	System.Int64	long
+
+Shelves
+| getschema 
+
+//shelf	0	System.Int64	long
+//rf_ids	1	System.Object	dynamic
+//total_weight	2	System.Int64	long
+
+//inner join?
+
