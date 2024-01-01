@@ -1,0 +1,7 @@
+//get table schema
+
+Onboarding | getschema 
+
+//get sum of score column
+Onboarding|
+summarize sum(Score)
