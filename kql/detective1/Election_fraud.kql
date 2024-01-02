@@ -1,0 +1,20 @@
+// Query that counts the votes:
+Votes
+| summarize Count=count() by vote
+| as hint.materialized=true T
+| extend Total = toscalar(T | summarize sum(Count))
+| project vote, Percentage = round(Count*100.0 / Total, 1), Count
+| order by Count
+
+//Poppy	51.7	2601570
+//Kastor	25.6	1285782
+//Gaul	19.4	976570
+//Willie	3.3	166499
+
+//The polls predicted a close battle between Kastor and Gaul,
+//but the actual results showed that the ex-mayor’s fish got a whopping 51.7% of all votes! That sure does sound fishy...
+
+Votes
+| top 10 by vote
+
+// columns are Timestamp, vote, via_ip, voter_hash_id
