@@ -27,6 +27,29 @@ Shelves
 | where rf_ids contains "0cbc13"
 
 // shelf = 3285 NO rf is on the floor
+// check
+
+Shelves 
+| where shelf == '3285' 
+| mv-expand rf_id = rf_ids to typeof(string)
+| lookup Books on rf_id 
+| project shelf, author, book_title, total_weight, weight_gram
+
+//not there
+
+Shelves 
+//where shelf == '5853' 
+| mv-expand rf_id = rf_ids to typeof(string) 
+| lookup Books on rf_id 
+| project shelf, author, book_title, total_weight, weight_gram
+| summarize books_weight=sum(weight_gram) by shelf, total_weight
+| sort by total_weight - books_weight
+
+// shelf 4242
+
+
+
+
 
 
 
