@@ -15,5 +15,22 @@ Shelves
 //rf_ids	1	System.Object	dynamic
 //total_weight	2	System.Int64	long
 
-//inner join?
+// does the book exist?
+
+search "*Revolutionibus*"
+
+// "De Revolutionibus Magnis Data" exists. rf_id = 0cbc13e0aa7d487e8e797d3de3823161. weight = 1764
+
+// try searching for rf_id
+
+Shelves
+| where rf_ids contains "0cbc13"
+
+// shelf = 3285 NO rf is on the floor
+
+
+
+
+
+
 
