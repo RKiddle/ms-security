@@ -18,3 +18,40 @@ Votes
 | top 10 by vote
 
 // columns are Timestamp, vote, via_ip, voter_hash_id
+
+Votes
+| where vote == "Poppy"
+| summarize Count=count() by vote, via_ip
+| order by Count asc 
+
+// lots of areas with low counts and counts of around 200
+
+Votes
+| where vote == "Poppy"
+| summarize Count=count() by vote, via_ip
+| where Count >= 191
+| order by Count asc 
+
+Votes
+| where vote == "Poppy"
+| summarize Count=count() by vote, via_ip, Timestamp
+| where Count > 1
+| order by Count asc 
+
+//some votes with the same Timwstamp
+//Poppy	10.168.14.146	2022-10-01T13:13:22.6682301Z	2
+//Poppy	10.168.23.20	2022-10-01T16:16:16.7696445Z	2
+//Poppy	10.168.30.77	2022-10-01T18:51:38.0560083Z	2
+//Poppy	10.168.1.39	2022-10-01T08:24:50.4933068Z	2
+//Poppy	10.168.26.246	2022-10-01T17:39:47.5292206Z	2
+//Poppy	10.168.0.226	2022-10-01T08:19:00.9251557Z	2
+
+Votes
+| where vote == 'Poppy'
+| summarize Count = count() by bin(Timestamp, 1h), via_ip
+| summarize votesPoppy = make_list(Count), Timestamp = make_list(Timestamp) by via_ip
+| extend outliers = series_decompose_anomalies(votesPoppy)
+| mv-expand Timestamp, votesPoppy, outliers
+| where outliers == 1
+| distinct via_ip;
+
