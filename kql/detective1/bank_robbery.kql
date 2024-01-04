@@ -41,3 +41,170 @@ Traffic
 | where VIN == 'YB236233E4' 
 | project Ave, Street
 | render scatterchart
+
+Traffic
+| where Street == 148 and Ave == 157
+| where Timestamp > datetime(2022-10-16T08:30:00Z) and Timestamp < datetime(2022-10-16T08:32:00Z)
+| summarize sightings = count(VIN) by VIN
+| order by sightings
+
+//OL6A480098	2
+//TG016C487B	2
+
+
+Traffic
+| where Street == 148 and Ave == 157
+| where Timestamp > datetime(2022-10-16T08:30:40Z) and Timestamp < datetime(2022-10-16T08:31:10Z)
+
+let cars = Traffic
+| where Street == 148 and Ave == 157
+| where Timestamp > datetime(2022-10-16T08:30:40Z) and Timestamp < datetime(2022-10-16T08:31:20Z)
+| summarize mylist = make_list(VIN);
+
+
+let cars = Traffic
+| where Street == 148 and Ave == 157
+| where Timestamp > datetime(2022-10-16T08:30:40Z) and Timestamp < datetime(2022-10-16T08:31:20Z)
+//| summarize mylist = make_list(VIN);
+| project VIN;
+
+
+// This is wrong
+Traffic
+| where Timestamp > datetime(2022-10-16T08:31:20Z)
+| where (VIN in (cars))
+| project Ave, Street
+| render scatterchart
+
+
+MN5496EA4B
+ZAE022420F
+CX69FBE00F
+DWE41539C1
+PKAC8D5D60
+OLE32117CE
+JQ8FFF1D9C
+KP02E460D3
+PK31C01426
+VE5EFC24FD
+
+Traffic
+| where Timestamp > datetime(2022-10-16T08:30:50Z)
+| where VIN in ('MN5496EA4B'
+,'OLE32117CE'
+,'JQ8FFF1D9C'
+,'KP02E460D3'
+,'PK31C01426'
+,'VE5EFC24FD')
+| project Ave, Street
+| render scatterchart
+
+
+ Traffic
+| where Street == 148 and Ave == 157
+| where Timestamp > datetime(2022-10-16T08:30:40Z) and Timestamp < datetime(2022-10-16T08:35:20Z)
+| join kind=leftanti ( Traffic | where Timestamp >= datetime(2022-10-16T08:17:00Z) and Timestamp <= datetime(2022-10-16T08:31:00Z)) on VIN
+| project VIN
+
+AZ1CF016C0
+XC2952A7FB
+OL289EC52D
+RI8E6C4294
+CXDE148D63
+EVC5998891
+JQA95E2831
+YBC9DCFD38
+ZA78E62FF9
+AZEC63C542
+HS13E2ED9F
+NM4840AFAD
+TGF8358523
+HS4A226F55
+LOEF86D5BF
+
+Traffic
+| where Timestamp > datetime(2022-10-16T08:30:50Z)
+| where VIN in ('MN5496EA4B'
+,'AZ1CF016C0'
+,'XC2952A7FB'
+,'OL289EC52D'
+,'RI8E6C4294'
+,'CXDE148D63'
+,'EVC5998891'
+,'JQA95E2831'
+,'YBC9DCFD38'
+,'ZA78E62FF9'
+,'AZEC63C542'
+,'HS13E2ED9F'
+,'NM4840AFAD'
+,'TGF8358523'
+,'HS4A226F55'
+,'LOEF86D5BF')
+| summarize numCars = count(VIN) by Street, Ave
+| where numCars == 3
+
+
+Traffic
+| where Timestamp > datetime(2022-10-16T08:30:50Z)
+| where VIN in ('MN5496EA4B'
+,'AZ1CF016C0'
+,'XC2952A7FB'
+,'OL289EC52D'
+,'RI8E6C4294'
+,'CXDE148D63'
+,'EVC5998891'
+,'JQA95E2831'
+,'YBC9DCFD38'
+,'ZA78E62FF9'
+,'AZEC63C542'
+,'HS13E2ED9F'
+,'NM4840AFAD'
+,'TGF8358523'
+,'HS4A226F55'
+,'LOEF86D5BF')
+| summarize arg_max(Timestamp,*) by VIN
+| summarize numCars = count(VIN) by Street, Ave
+| where numCars == 3
+
+// street = 258, Ave = 42
+
+
+raffic
+| where Timestamp > datetime(2022-10-16T08:30:50Z)
+| where VIN in ('MN5496EA4B'
+,'AZ1CF016C0'
+,'XC2952A7FB'
+,'OL289EC52D'
+,'RI8E6C4294'
+,'CXDE148D63'
+,'EVC5998891'
+,'JQA95E2831'
+,'YBC9DCFD38'
+,'ZA78E62FF9'
+,'AZEC63C542'
+,'HS13E2ED9F'
+,'NM4840AFAD'
+,'TGF8358523'
+,'HS4A226F55'
+,'LOEF86D5BF')
+| where Street == 258 and Ave == 42
+| summarize arg_max(Timestamp,*) by VIN
+//| summarize numCars = count(VIN) by Street, Ave
+//| where numCars == 3
+
+//XC2952A7FB	2022-10-16T09:59:40Z	42	258
+//RI8E6C4294	2022-10-16T10:03:50Z	42	258
+//CXDE148D63	2022-10-16T10:37:50Z	42	258
+
+
+Traffic
+| where Timestamp > datetime(2022-10-16T08:31:20Z)
+| where (VIN in ('XC2952A7FB', 'RI8E6C4294', 'CXDE148D63'))
+| project Ave, Street
+| render scatterchart
+
+Traffic
+| where Timestamp > datetime(2022-10-16T08:31:20Z)
+| where (VIN in ('XC2952A7FB', 'RI8E6C4294'))
+| project Ave, Street
+| render scatterchart
