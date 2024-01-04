@@ -55,3 +55,15 @@ Votes
 | where outliers == 1
 | distinct via_ip;
 
+let badProxies = Votes
+| where vote == 'Poppy'
+| summarize Count = count() by bin(Timestamp, 1h), via_ip
+| where Count >= 130
+| distinct via_ip;
+Votes
+| where not(via_ip in (badProxies))
+| summarize Count=count() by vote
+| as hint.materialized=true T
+| extend Total = toscalar(T | summarize sum(Count))
+| project vote, Percentage = round(Count*100.0 / Total, 1), Count
+| order by Count
