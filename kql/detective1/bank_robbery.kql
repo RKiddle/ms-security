@@ -28,3 +28,16 @@ Traffic
 | where VIN == 'XCCB8163E6' 
 | project Ave, Street;
 
+Traffic
+| where Street == 148 and Ave == 157 
+| join kind=leftanti ( Traffic | where Timestamp >= datetime(2022-10-16T08:17:00Z) and Timestamp <= datetime(2022-10-16T08:31:00Z)) on VIN
+| summarize sightings = count(VIN) by VIN
+| order by sightings
+
+YB236233E4 = 4
+
+Traffic
+| where Timestamp > datetime(2022-10-16T08:30:50Z)
+| where VIN == 'YB236233E4' 
+| project Ave, Street
+| render scatterchart
