@@ -1,0 +1,24 @@
+Traffic
+| getschema 
+
+// Timestamp (DateTime), VIN (string), Ave (int), Street (int)
+
+Traffic
+| top 1 by Timestamp
+
+// 2022-10-16T10:59:50Z	PK1DF0FE60	93	141
+
+
+Traffic
+| where Timestamp between (datetime(2022-10-16T08:17:50Z) .. datetime(2022-10-16T08:30:50Z))
+| where Ave == 157 and Street == 148
+| distinct VIN
+
+Traffic
+| where Timestamp between (datetime(2022-10-16T08:17:50Z) .. datetime(2022-10-16T08:30:50Z))
+| where Ave == 157 and Street == 148
+| summarize sightings = count(VIN) by VIN
+| order by sightings
+
+//XCCB8163E6 =3
+//OL6A480098 =3
