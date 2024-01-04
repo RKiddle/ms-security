@@ -22,3 +22,9 @@ Traffic
 
 //XCCB8163E6 =3
 //OL6A480098 =3
+
+ Traffic
+| where Timestamp > datetime(2022-10-16T08:30:50Z)
+| where VIN == 'XCCB8163E6' 
+| project Ave, Street;
+
