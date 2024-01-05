@@ -1,16 +1,3 @@
-let n = 27;
-let k = 2;
-let primes = range(2, n + 2)
-| where isprime(_);
-let specialPrimeNumbers = primes
-| join kind=inner (
-    primes
-    | extend prime1 = toint(prev(_).Column1)
-    | project prime1, prime2 = toint(Column1)
-    | extend sum = prime1 + prime2 + 1
-    | where sum <= n
-) on $left.prime1 == $right.prime1
-| summarize count() by $left.prime2
-| where count_ >= k;
-specialPrimeNumbers
-| project Result = iff(count_ >= k, "YES", "NO")
+// The largest special prime number under 100 million is 99999989.
+
+// https://aka.ms/99999989
